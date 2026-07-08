@@ -11,8 +11,29 @@ Built to bridge communication between hearing and deaf/hard-of-hearing communiti
 Takes an English sentence as input, applies ISL grammar rules, and plays the corresponding ISL sign video clips — fully offline, no internet needed.
 
 **Example:** 
+
 Input: "I want to eat food tomorrow" 
+
 Output: ISL signs played in correct order: TOMORROW I FOOD EAT WANT 
+
+---
+
+---
+
+## Key Feature — ISL Grammar Engine
+
+English and ISL follow completely different grammar structures.
+
+- English: Subject → Verb → Object (`I eat food tomorrow`)
+- ISL: Time → Topic → Comment (`TOMORROW I FOOD EAT`)
+
+SETU includes a custom **ISL Grammar Reordering Engine** built with spaCy that automatically reorders English words into the correct ISL grammatical order before playing the signs.
+
+**ISL Grammar Buckets (in order):**
+
+TIME -> GREETIBGS -> PRONOUN -> NOUN -> VERB -> OBJECT -> NEGATION -> QUESTION
+
+This ensures the signs are played in the order a deaf person would naturally sign them — not just a direct word-for-word translation.
 
 ---
 
@@ -25,6 +46,31 @@ Text Input -> ISL Grammar Reordering -> Clip Lookup -> Video Playback
 2. **Clip Lookup** — Searches 9,327 ISLRTC video clips using a fast dictionary index. Handles plurals, -ing forms, and word mappings automatically.
 
 3. **Smooth Playback** — Plays clips in a single persistent OpenCV window with a progress bar. Uses INTER_AREA interpolation for clean resizing.
+
+---
+
+## How to Run
+
+1. Clone the repository
+```bash
+git clone https://github.com/YShamili/SETU-ISL.git
+cd SETU-ISL
+```
+
+2. Install dependencies
+```bash
+pip install opencv-python numpy spacy
+python -m spacy download en_core_web_sm
+```
+
+3. Download ISLRTC clips and place at `data/isl_clips/`
+
+4. Open `notebooks/2_text-to-sign.ipynb` in Jupyter
+
+5. Run all cells — then call:
+```python
+text_to_sign_smooth("your sentence here")
+```
 
 ---
 
@@ -76,38 +122,11 @@ data/
 
 ---
 
-## Project Context
+## Project Status
 
-Built as part of **SETU** — a bidirectional ISL communication system for the deaf community.
-
-- **Direction B (this repo):** Text → ISL Signs ✅
-- **Direction A (collaborator):** ISL Signs → Text (in progress)
-- **Speech to Sign:** Converting speech input to ISL signs (in progress)
-
----
-
-## How to Run
-
-1. Clone the repository
-```bash
-git clone https://github.com/YShamili/SETU-ISL.git
-cd SETU-ISL
-```
-
-2. Install dependencies
-```bash
-pip install opencv-python numpy spacy
-python -m spacy download en_core_web_sm
-```
-
-3. Download ISLRTC clips and place at `data/isl_clips/`
-
-4. Open `notebooks/2_text-to-sign.ipynb` in Jupyter
-
-5. Run all cells — then call:
-```python
-text_to_sign_smooth("your sentence here")
-```
+- **Text to Sign ✅** — Fully working, 97.96% word coverage
+- **Sign to Text 🔄** — In progress 
+- **Speech to Sign 🔄** — In progress
 
 ---
 
